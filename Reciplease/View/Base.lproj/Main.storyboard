@@ -160,12 +160,13 @@
                                             <outlet property="likesLabel" destination="JNI-Fe-yLu" id="dPJ-q5-f6C"/>
                                             <outlet property="timeLabel" destination="SMj-CD-xCF" id="WEb-xm-uWq"/>
                                             <outlet property="titleLabel" destination="AUW-fj-uKB" id="rTA-1u-NXs"/>
-                                            <segue destination="gjC-SZ-7Eo" kind="show" id="94g-r1-pau"/>
+                                            <segue destination="gjC-SZ-7Eo" kind="show" identifier="detailRecipe" id="94g-r1-pau"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="ke7-nf-adp" id="hXp-xQ-aLF"/>
+                                    <outlet property="delegate" destination="ke7-nf-adp" id="L82-Ty-s9Y"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -279,8 +280,14 @@
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="20" scale="large" weight="medium"/>
                                 </state>
                             </button>
+                            <connections>
+                                <action selector="addToFavorite:" destination="gjC-SZ-7Eo" id="m26-MO-vf9"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="nameLabel" destination="gCz-GZ-fDg" id="tfj-R7-i5b"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OCn-Cc-wKb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

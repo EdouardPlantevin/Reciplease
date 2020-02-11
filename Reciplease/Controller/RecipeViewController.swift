@@ -10,6 +10,14 @@ import UIKit
 
 class RecipeViewController: UIViewController {
     
+    enum page {
+        case search
+        case favorite
+    }
+    
+    var currentPage: page = .favorite
+    var selectedRecipe: RecipeClass?
+    
     // MARK: - Outlet
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var gradientViewCell: UIView!
@@ -29,25 +37,36 @@ class RecipeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "detailRecipe") {
+            let vc = segue.destination as! DetailRecipeViewController
+            vc.recipe = selectedRecipe
+        }
+    }
 
 }
 
 
 // MARK: - TableView Recipe
-extension RecipeViewController: UITableViewDataSource {
+extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 150
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.selectedRecipe = RecipeService.shared.recipes?.hits[indexPath.row].recipe
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return Ingredient.all.count
         return RecipeService.shared.recipes!.hits.count
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "recipeCell", for: indexPath) as? RecipeTableViewCell else { return UITableViewCell() }
@@ -73,4 +92,5 @@ extension RecipeViewController: UITableViewDataSource {
         cell.configure(withImage: image, title: recipe!.recipe.label, detail: detailString, time: "\(finalTime) h", likes: "2.5")
         return cell
     }
+    
 }

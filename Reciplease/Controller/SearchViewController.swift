@@ -29,7 +29,7 @@ class SearchViewController: UIViewController {
         textfieldIngredient.resignFirstResponder()
     }
     @IBAction func clearBtn(_ sender: UIButton) {
-        Ingredient.deleteAll()
+        Item.deleteAll()
         displayPeopleList()
         ingredients.removeAll()
     }
@@ -40,6 +40,7 @@ class SearchViewController: UIViewController {
                 RecipeService.shared.add(recipes: recipe!)
                 print(recipe!.hits.first!.recipe.label)
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "recipeViewController") as! RecipeViewController
+                vc.currentPage = .search
                 self.navigationController?.pushViewController(vc, animated: true)
             } else {
                 print("erreur")
@@ -61,7 +62,7 @@ class SearchViewController: UIViewController {
     //MARK:  Private Function
     fileprivate func displayPeopleList() {
         var ingredientText = ""
-        for ingredient in Ingredient.all {
+        for ingredient in Item.all {
             if let name = ingredient.name {
                 ingredientText += "  - " + name + "\n"
                 ingredients.append(name)
@@ -89,7 +90,7 @@ class SearchViewController: UIViewController {
     }
     
     private func saveIngredient(named name: String) {
-        let ingredient = Ingredient(context: AppDelegate.viewContext)
+        let ingredient = Item(context: AppDelegate.viewContext)
         ingredient.name = name
         try? AppDelegate.viewContext.save()
     }

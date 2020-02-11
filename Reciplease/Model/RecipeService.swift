@@ -15,9 +15,9 @@ class RecipeService {
     static let shared = RecipeService()
     private init() {}
     
-    private(set) var recipes: Recipe?
+    private(set) var recipes: RecipeFromJson?
     
-    func add(recipes: Recipe) {
+    func add(recipes: RecipeFromJson) {
         self.recipes = recipes
     }
     
@@ -26,7 +26,7 @@ class RecipeService {
     private let baseURL = "https://api.edamam.com/search?"
     
     private func getFullURL() -> String {
-        let ingredientsData = Ingredient.all
+        let ingredientsData = Item.all
         var ingredientsArray: [String] = []
         for ingredient in ingredientsData {
             if let ingredient = ingredient.name {
@@ -34,12 +34,12 @@ class RecipeService {
             }
         }
         let ingredientURL = ingredientsArray.joined(separator: "%20")
-        let keyURL = Key.keyRecipe
+        let keyURL = Keys.keyRecipe
         let finalURL = baseURL + "q=" + ingredientURL + "&app_key=" + keyURL
         return finalURL
     }
     
-    func getRecipe(callBack: @escaping (Bool,Recipe?) -> Void) {
+    func getRecipe(callBack: @escaping (Bool,RecipeFromJson?) -> Void) {
         let url = getFullURL()
         Alamofire.request(url).validate().responseJSON { response in
             switch response.result {
@@ -50,7 +50,7 @@ class RecipeService {
                     }
                     let jsonDecoder = JSONDecoder()
                     do {
-                        let recipe = try jsonDecoder.decode(Recipe.self, from: jsonData)
+                        let recipe = try jsonDecoder.decode(RecipeFromJson.self, from: jsonData)
                         if recipe.count > 0 {
                             callBack(true, recipe)
                         } else {
