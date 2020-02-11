@@ -10,5 +10,5 @@ import Foundation
 
 
 struct Key {
-    static let keyRecipe = ""
+    static let keyRecipe = "test"
 }
