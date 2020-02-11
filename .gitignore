@@ -3,3 +3,7 @@ Reciplease/Model/Keys.swift
 Keys
 *.Keys
 *.Keys.swift
+*.Keys.swift
+$Keys.swift
+*Keys.swift
+
