@@ -38,7 +38,6 @@ class SearchViewController: UIViewController {
         RecipeService.shared.getRecipe { (success, recipe) in
             if success {
                 RecipeService.shared.add(recipes: recipe!)
-                print(recipe!.hits.first!.recipe.label)
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "recipeViewController") as! RecipeViewController
                 vc.currentPage = .search
                 self.navigationController?.pushViewController(vc, animated: true)

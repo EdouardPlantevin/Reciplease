@@ -16,7 +16,7 @@ class RecipeViewController: UIViewController {
     }
     
     var currentPage: page = .favorite
-    var selectedRecipe: RecipeClass?
+    var selectedRecipe: RecipeObject?
     
     // MARK: - Outlet
     @IBOutlet weak var tableView: UITableView!
@@ -60,11 +60,11 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.selectedRecipe = RecipeService.shared.recipes?.hits[indexPath.row].recipe
+        self.selectedRecipe = RecipeService.shared.recipes![indexPath.row]
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return RecipeService.shared.recipes!.hits.count
+        return RecipeService.shared.recipes!.count
     }
     
     
@@ -72,24 +72,19 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "recipeCell", for: indexPath) as? RecipeTableViewCell else { return UITableViewCell() }
         
         //let recipe = Ingredient.all[indexPath.row]
-        let recipe = RecipeService.shared.recipes?.hits[indexPath.row]
+        let recipe = RecipeService.shared.recipes?[indexPath.row]
         
-        let detail = recipe?.recipe.ingredientLines ?? [""]
-        let detailString = detail.joined(separator: " ")
-        
-        let imageURL = recipe?.recipe.image ?? "12218_large"
-        let url = URL(string: imageURL)
-        let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
-        let image = UIImage(data: data!)!
-        
-        var finalTime = 0
-        if let time = recipe?.recipe.totalTime {
-            finalTime = time / 60
+        var detailString = ""
+        for ingredient in recipe!.ingredient {
+            detailString += ingredient.key + " "
         }
         
+        let imageURL = recipe?.image ?? "12218_large"
+        let url = URL(string: imageURL)
+        let data = try? Data(contentsOf: url!)
+        let image = UIImage(data: data!)!
         
-        
-        cell.configure(withImage: image, title: recipe!.recipe.label, detail: detailString, time: "\(finalTime) h", likes: "2.5")
+        cell.configure(withImage: image, title: recipe!.name, detail: detailString, time: "\(recipe!.time / 60) h", likes: "2.5")
         return cell
     }
     

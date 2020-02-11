@@ -15,9 +15,9 @@ class RecipeService {
     static let shared = RecipeService()
     private init() {}
     
-    private(set) var recipes: RecipeFromJson?
+    private(set) var recipes: [RecipeObject]?
     
-    func add(recipes: RecipeFromJson) {
+    func add(recipes: [RecipeObject]) {
         self.recipes = recipes
     }
     
@@ -39,7 +39,7 @@ class RecipeService {
         return finalURL
     }
     
-    func getRecipe(callBack: @escaping (Bool,RecipeFromJson?) -> Void) {
+    func getRecipe(callBack: @escaping (Bool,[RecipeObject]?) -> Void) {
         let url = getFullURL()
         Alamofire.request(url).validate().responseJSON { response in
             switch response.result {
@@ -50,9 +50,21 @@ class RecipeService {
                     }
                     let jsonDecoder = JSONDecoder()
                     do {
-                        let recipe = try jsonDecoder.decode(RecipeFromJson.self, from: jsonData)
-                        if recipe.count > 0 {
-                            callBack(true, recipe)
+                        let recipes = try jsonDecoder.decode(RecipeFromJson.self, from: jsonData)
+                        if recipes.count > 0 {
+                            var recipesFinal: [RecipeObject] = []
+                            for recipe in recipes.hits {
+                                let name = recipe.recipe.label
+                                let image = recipe.recipe.image
+                                let time = recipe.recipe.totalTime
+                                var ingredients: [String: Double] = [:]
+                                for ingredient in recipe.recipe.ingredients {
+                                    ingredients[ingredient.text] = ingredient.weight
+                                }
+                                let recipe = RecipeObject(name: name, image: image, time: time, ingredient: ingredients)
+                                recipesFinal.append(recipe)
+                            }
+                            callBack(true, recipesFinal)
                         } else {
                             callBack(false, nil)
                         }

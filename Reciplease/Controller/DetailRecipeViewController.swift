@@ -13,12 +13,12 @@ class DetailRecipeViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
     
     
-    var recipe: RecipeClass? = nil
+    var recipe: RecipeObject? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        nameLabel.text = recipe?.label
+        nameLabel.text = recipe?.name
     }
     
     @IBAction func addToFavorite(_ sender: UIBarButtonItem) {
