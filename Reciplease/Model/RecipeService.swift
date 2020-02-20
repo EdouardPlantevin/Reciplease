@@ -21,6 +21,26 @@ class RecipeService {
         self.recipes = recipes
     }
     
+    func delete(index: Int) {
+        self.recipes?.remove(at: index)
+    }
+    
+    static func convertRecipeToRecipeObject(recipe: Recipe) -> RecipeObject? {
+        guard let name = recipe.name else { return nil }
+        guard let image = recipe.image else { return nil }
+        let time = Int(recipe.time)
+        guard let ingredientsNSSet = (recipe.ingredients?.allObjects as? [Ingredient]) else { return nil}
+        
+        var ingredients: [String:Double] = [:]
+        for ingredient in ingredientsNSSet {
+            guard let nameIngredient = ingredient.name else { return nil }
+            ingredients[nameIngredient] = ingredient.quantity
+        }
+        
+        let recipeObject: RecipeObject = RecipeObject(name: name, image: image, time: time, ingredient: ingredients)
+        return recipeObject
+    }
+    
     
     
     private let baseURL = "https://api.edamam.com/search?"

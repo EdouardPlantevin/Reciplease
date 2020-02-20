@@ -19,7 +19,7 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.textfieldIngredient.delegate = self
-        displayPeopleList()
+        displayIngredientsList()
     }
     
     
@@ -30,7 +30,7 @@ class SearchViewController: UIViewController {
     }
     @IBAction func clearBtn(_ sender: UIButton) {
         Item.deleteAll()
-        displayPeopleList()
+        displayIngredientsList()
         ingredients.removeAll()
     }
     
@@ -59,7 +59,7 @@ class SearchViewController: UIViewController {
     
 
     //MARK:  Private Function
-    fileprivate func displayPeopleList() {
+    fileprivate func displayIngredientsList() {
         var ingredientText = ""
         for ingredient in Item.all {
             if let name = ingredient.name {

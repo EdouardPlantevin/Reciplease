@@ -11,7 +11,7 @@
         <scene sceneID="txg-5f-JbC">
             <objects>
                 <navigationController id="a9H-dh-zLI" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Favorite" id="5BL-jv-T4p"/>
+                    <tabBarItem key="tabBarItem" title="Favorite" image="heart.fill" catalog="system" id="5BL-jv-T4p"/>
                     <navigationBar key="navigationBar" opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="kaF-xh-1e5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -160,7 +160,6 @@
                                             <outlet property="likesLabel" destination="JNI-Fe-yLu" id="dPJ-q5-f6C"/>
                                             <outlet property="timeLabel" destination="SMj-CD-xCF" id="WEb-xm-uWq"/>
                                             <outlet property="titleLabel" destination="AUW-fj-uKB" id="rTA-1u-NXs"/>
-                                            <segue destination="gjC-SZ-7Eo" kind="show" identifier="detailRecipe" id="94g-r1-pau"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -193,9 +192,9 @@
         <!--Reciplease-->
         <scene sceneID="Bes-P0-xfm">
             <objects>
-                <viewController id="gjC-SZ-7Eo" customClass="DetailRecipeViewController" customModule="Reciplease" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="detailRecipeViewController" storyboardIdentifier="detailRecipeViewController" id="gjC-SZ-7Eo" customClass="DetailRecipeViewController" customModule="Reciplease" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="iI3-Aj-HJu">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FWh-wF-Fb3">
@@ -226,8 +225,8 @@
                                     <constraint firstItem="gCz-GZ-fDg" firstAttribute="leading" secondItem="FWh-wF-Fb3" secondAttribute="leading" constant="5" id="wMZ-Nh-Bmi"/>
                                 </constraints>
                             </view>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="- Des fruits" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kLU-l6-jYe">
-                                <rect key="frame" x="15" y="365" width="345" height="124"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kLU-l6-jYe">
+                                <rect key="frame" x="15" y="365" width="345" height="217"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="BradleyHandITCTT-Bold" family="Bradley Hand" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -242,7 +241,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qgC-0H-yXz">
-                                <rect key="frame" x="20" y="499" width="335" height="60"/>
+                                <rect key="frame" x="20" y="592" width="335" height="60"/>
                                 <color key="backgroundColor" red="0.15869453550000001" green="0.6482657194" blue="0.50983995199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="AQG-cb-Wdg"/>
@@ -279,13 +278,20 @@
                                 <state key="normal" image="star" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="20" scale="large" weight="medium"/>
                                 </state>
+                                <connections>
+                                    <action selector="addToFavority:" destination="gjC-SZ-7Eo" eventType="touchUpInside" id="pA4-So-akM"/>
+                                </connections>
                             </button>
                             <connections>
-                                <action selector="addToFavorite:" destination="gjC-SZ-7Eo" id="m26-MO-vf9"/>
+                                <action selector="addToFavorite:" destination="gjC-SZ-7Eo" id="Y0W-Fq-8Zx"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="favorityBtnOutlet" destination="ewy-g5-unl" id="1qc-Eb-5lZ"/>
+                        <outlet property="favorityOutlet" destination="Mhy-sE-m9r" id="Knw-KJ-QIL"/>
+                        <outlet property="imageRecipe" destination="wyg-XR-M7S" id="iXz-ar-Yal"/>
+                        <outlet property="ingredientsTextView" destination="kLU-l6-jYe" id="zSZ-Ea-NYl"/>
                         <outlet property="nameLabel" destination="gCz-GZ-fDg" id="tfj-R7-i5b"/>
                     </connections>
                 </viewController>
@@ -500,6 +506,7 @@
     <resources>
         <image name="12218_large" width="631" height="431"/>
         <image name="hand.thumbsup.fill" catalog="system" width="64" height="64"/>
+        <image name="heart.fill" catalog="system" width="64" height="58"/>
         <image name="magnifyingglass" catalog="system" width="64" height="60"/>
         <image name="star" catalog="system" width="64" height="58"/>
         <image name="timer" catalog="system" width="64" height="62"/>

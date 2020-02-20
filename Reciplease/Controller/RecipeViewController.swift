@@ -16,7 +16,6 @@ class RecipeViewController: UIViewController {
     }
     
     var currentPage: page = .favorite
-    var selectedRecipe: RecipeObject?
     
     // MARK: - Outlet
     @IBOutlet weak var tableView: UITableView!
@@ -36,13 +35,7 @@ class RecipeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "detailRecipe") {
-            let vc = segue.destination as! DetailRecipeViewController
-            vc.recipe = selectedRecipe
-        }
+        tableView.reloadData()
     }
 
 }
@@ -60,32 +53,65 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.selectedRecipe = RecipeService.shared.recipes![indexPath.row]
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "detailRecipeViewController") as! DetailRecipeViewController
+        
+        let selectedRecipeObject: RecipeObject!
+        
+        if currentPage == .search {
+            selectedRecipeObject = RecipeService.shared.recipes![indexPath.row]
+            vc.currentPage = .search
+        } else {
+            let selectedRecipe = Recipe.all[indexPath.row]
+            vc.recipe = selectedRecipe
+            vc.index = indexPath.row
+            selectedRecipeObject = RecipeService.convertRecipeToRecipeObject(recipe: selectedRecipe)
+        }
+        vc.recipeObject = selectedRecipeObject
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return RecipeService.shared.recipes!.count
+        if currentPage == .search {
+            return RecipeService.shared.recipes!.count
+        } else {
+            return Recipe.all.count
+        }
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "recipeCell", for: indexPath) as? RecipeTableViewCell else { return UITableViewCell() }
         
-        //let recipe = Ingredient.all[indexPath.row]
-        let recipe = RecipeService.shared.recipes?[indexPath.row]
-        
-        var detailString = ""
-        for ingredient in recipe!.ingredient {
-            detailString += ingredient.key + " "
+        if currentPage == .search {
+            let recipe = RecipeService.shared.recipes?[indexPath.row]
+            
+            var detailString = ""
+            for ingredient in recipe!.ingredient {
+                detailString += ingredient.key + " "
+            }
+            
+            let imageURL = recipe?.image ?? "12218_large"
+            let url = URL(string: imageURL)
+            let data = try? Data(contentsOf: url!)
+            let image = UIImage(data: data!)!
+            
+            cell.configure(withImage: image, title: recipe!.name, detail: detailString, time: "\(recipe!.time / 60) h", likes: "2.5")
+            return cell
+        } else {
+            var image: UIImage = UIImage(named: "12218_large")!
+            let recipe = Recipe.all[indexPath.row]
+            if let imageURL = recipe.image {
+                if let url = URL(string: imageURL) {
+                    if let data = try? Data(contentsOf: url) {
+                        image = UIImage(data: data)!
+                    }
+                }
+            }
+            let name = recipe.name ?? ""
+            let detail = recipe.name ?? ""
+            cell.configure(withImage: image, title: name, detail: detail, time: "0", likes: "0")
+            return cell
         }
-        
-        let imageURL = recipe?.image ?? "12218_large"
-        let url = URL(string: imageURL)
-        let data = try? Data(contentsOf: url!)
-        let image = UIImage(data: data!)!
-        
-        cell.configure(withImage: image, title: recipe!.name, detail: detailString, time: "\(recipe!.time / 60) h", likes: "2.5")
-        return cell
     }
     
 }
