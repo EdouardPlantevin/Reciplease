@@ -25,9 +25,10 @@ class RecipeService {
         self.recipes?.remove(at: index)
     }
     
-    static func convertRecipeToRecipeObject(recipe: Recipe) -> RecipeObject? {
+    static func convertRecipeToRecipeObject(recipe: RecipeDataModel) -> RecipeObject? {
         guard let name = recipe.name else { return nil }
         guard let image = recipe.image else { return nil }
+        guard let url = recipe.url else { return nil }
         let time = Int(recipe.time)
         guard let ingredientsNSSet = (recipe.ingredients?.allObjects as? [Ingredient]) else { return nil}
         
@@ -37,7 +38,7 @@ class RecipeService {
             ingredients[nameIngredient] = ingredient.quantity
         }
         
-        let recipeObject: RecipeObject = RecipeObject(name: name, image: image, time: time, ingredient: ingredients)
+        let recipeObject: RecipeObject = RecipeObject(name: name, image: image, time: time, ingredient: ingredients, url: url)
         return recipeObject
     }
     
@@ -77,11 +78,12 @@ class RecipeService {
                                 let name = recipe.recipe.label
                                 let image = recipe.recipe.image
                                 let time = recipe.recipe.totalTime
+                                let url = recipe.recipe.url
                                 var ingredients: [String: Double] = [:]
                                 for ingredient in recipe.recipe.ingredients {
                                     ingredients[ingredient.text] = ingredient.weight
                                 }
-                                let recipe = RecipeObject(name: name, image: image, time: time, ingredient: ingredients)
+                                let recipe = RecipeObject(name: name, image: image, time: time, ingredient: ingredients, url: url)
                                 recipesFinal.append(recipe)
                             }
                             callBack(true, recipesFinal)

@@ -17,7 +17,7 @@ class DetailRecipeViewController: UIViewController {
     }
     
     var currentPage: page = .favorite
-    var recipe: Recipe?
+    var recipe: RecipeDataModel?
     var recipeObject: RecipeObject?
     var index: Int?
     var isFavorite: Bool = false
@@ -62,54 +62,20 @@ class DetailRecipeViewController: UIViewController {
     }
     
     private func addFavoriteRecipeObject(recipe: RecipeObject?) {
-        let recipeToAdd = Recipe(context: AppDelegate.viewContext)
-        guard let name = recipe?.name else { return }
-        guard let likes = recipe?.likes else { return }
-        guard let time = recipe?.time else { return }
-        guard let image = recipe?.image else { return }
-        recipeToAdd.name = name
-        recipeToAdd.likes = likes
-        recipeToAdd.time = Double(time)
-        recipeToAdd.image = image
-        try? AppDelegate.viewContext.save()
-        
-        guard let ingredients = recipe?.ingredient else { return }
-        for ingredient in ingredients {
-            let ingredientToSave = Ingredient(context: AppDelegate.viewContext)
-            ingredientToSave.quantity = ingredient.value
-            ingredientToSave.name = ingredient.key
-            ingredientToSave.recipe = recipeToAdd
-            try? AppDelegate.viewContext.save()
+        if let recipe = recipe {
+            self.recipe = RecipeDataModel.addRecipe(recipe: recipe)
+            changeBtnImageFavorite(fav: true)
+            isFavorite = true
         }
-        self.recipe = recipeToAdd
-        changeBtnImageFavorite(fav: true)
-        isFavorite = true
     }
     
-    private func deleteRecipe(recipe: Recipe) {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Recipe")
-        if let name = recipe.name {
-            fetchRequest.predicate = NSPredicate(format: "name = %@", name)
+    private func deleteRecipe(recipe: RecipeDataModel) {
+        RecipeDataModel.removeRecipe(recipe: recipe)
+        if let index = self.index {
+            RecipeService.shared.delete(index: index)
         }
-
-        do {
-            let profiles = try AppDelegate.viewContext.fetch(fetchRequest)
-
-            if let recipe = profiles.first as? Recipe {
-                AppDelegate.viewContext.delete(recipe)
-                try? AppDelegate.viewContext.save()
-                changeBtnImageFavorite(fav: false)
-                if let index = self.index {
-                    RecipeService.shared.delete(index: index)
-                }
-                changeBtnImageFavorite(fav: false)
-                isFavorite = false
-            } else {
-                // no local cache yet, use placeholder for now
-            }
-        } catch {
-            // handle error
-        }
+        changeBtnImageFavorite(fav: false)
+        isFavorite = false
     }
 
     @IBAction func addToFavority(_ sender: UIButton) {
@@ -123,6 +89,13 @@ class DetailRecipeViewController: UIViewController {
             addFavoriteRecipeObject(recipe: self.recipeObject)
         }
     }
- 
+    
+    @IBAction func getDirectionBtn(_ sender: UIButton) {
+        if let url = URL(string: "\(recipeObject?.url ?? "https://www.google.com")"),
+                UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url, options: [:])
+        }
+    }
+    
     
 }

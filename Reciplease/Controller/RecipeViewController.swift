@@ -61,7 +61,7 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
             selectedRecipeObject = RecipeService.shared.recipes![indexPath.row]
             vc.currentPage = .search
         } else {
-            let selectedRecipe = Recipe.all[indexPath.row]
+            let selectedRecipe = RecipeDataModel.all[indexPath.row]
             vc.recipe = selectedRecipe
             vc.index = indexPath.row
             selectedRecipeObject = RecipeService.convertRecipeToRecipeObject(recipe: selectedRecipe)
@@ -74,7 +74,7 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
         if currentPage == .search {
             return RecipeService.shared.recipes!.count
         } else {
-            return Recipe.all.count
+            return RecipeDataModel.all.count
         }
     }
     
@@ -99,7 +99,7 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         } else {
             var image: UIImage = UIImage(named: "12218_large")!
-            let recipe = Recipe.all[indexPath.row]
+            let recipe = RecipeDataModel.all[indexPath.row]
             if let imageURL = recipe.image {
                 if let url = URL(string: imageURL) {
                     if let data = try? Data(contentsOf: url) {

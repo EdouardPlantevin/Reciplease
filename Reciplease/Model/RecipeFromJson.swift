@@ -14,7 +14,7 @@ struct RecipeObject {
     let time: Int
     let likes = 2.5
     let ingredient: [String: Double]
-    var favorite: Bool = false
+    let url: String
 }
 
 // MARK: - Recipe
