@@ -13,6 +13,8 @@ class SearchViewController: UIViewController {
     
     @IBOutlet weak var textfieldIngredient: UITextField!
     @IBOutlet weak var listIngredient: UITextView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var searchRecipeBtn: UIButton!
     
     var ingredients: [String] = []
 
@@ -20,6 +22,7 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         self.textfieldIngredient.delegate = self
         displayIngredientsList()
+        activityIndicator.isHidden = true
     }
     
     
@@ -35,26 +38,26 @@ class SearchViewController: UIViewController {
     }
     
     @IBAction func searchRecipeBtn(_ sender: UIButton) {
+        showActivityIndicator()
+        activityIndicator.startAnimating()
         RecipeService.shared.getRecipe { (success, recipe) in
             if success {
                 RecipeService.shared.add(recipes: recipe!)
+                self.showActivityIndicator()
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "recipeViewController") as! RecipeViewController
                 vc.currentPage = .search
                 self.navigationController?.pushViewController(vc, animated: true)
             } else {
-                print("erreur")
+                presentAlert(view: self, message: "No recipe found\ncheck spelling")
+                self.showActivityIndicator()
             }
         }
     }
     
     //MARK: Function
-    func showAlert(title: String, message: String) {
-        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        let actionn = UIAlertAction(title: "WTF", style: .destructive, handler: nil)
-        alertVC.addAction(actionn)
-        alertVC.addAction(action)
-        present(alertVC, animated: true, completion: nil)
+    private func showActivityIndicator() {
+        searchRecipeBtn.isHidden = !searchRecipeBtn.isHidden
+        activityIndicator.isHidden = !activityIndicator.isHidden
     }
     
 
@@ -73,7 +76,7 @@ class SearchViewController: UIViewController {
     private func addIngredient() {
         if textfieldIngredient.text != nil && textfieldIngredient.text != "" {
             if ingredients.contains(textfieldIngredient.text!) {
-                showAlert(title: "Bro ?", message: "You already put it")
+                presentAlert(view: self, message: "You already put it")
             } else {
                 guard let ingredientName = textfieldIngredient.text else {
                     return
@@ -83,7 +86,7 @@ class SearchViewController: UIViewController {
                 ingredients.append(ingredientName)
             }
         } else {
-            showAlert(title: "Hum", message: "You try to add nothing ? go to the supermarket bro\nWe can't do anything for you here")
+            presentAlert(view: self, message: "You try to add nothing ? go to the supermarket bro\nWe can't do anything for you here")
         }
         textfieldIngredient.text = ""
     }

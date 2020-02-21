@@ -452,10 +452,16 @@
                                     <action selector="searchRecipeBtn:" destination="leN-CV-1Xx" eventType="touchUpInside" id="TdD-uc-LAa"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="mIC-zq-467">
+                                <rect key="frame" x="177.5" y="509" width="20" height="20"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.21607002619999999" green="0.2000213861" blue="0.19568935039999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="oBo-zz-zY4" firstAttribute="top" secondItem="bnz-eN-7Lx" secondAttribute="top" id="5Ps-Lz-rz6"/>
+                            <constraint firstItem="mIC-zq-467" firstAttribute="centerX" secondItem="YbP-Kw-TBV" secondAttribute="centerX" id="AE5-gK-jXb"/>
                             <constraint firstItem="c29-AK-gvx" firstAttribute="leading" secondItem="bnz-eN-7Lx" secondAttribute="leading" constant="20" id="Cst-Hz-GbL"/>
                             <constraint firstItem="3hU-eg-27Y" firstAttribute="top" secondItem="bDQ-tq-mx6" secondAttribute="bottom" constant="30" id="Pcf-pz-OuM"/>
                             <constraint firstItem="bnz-eN-7Lx" firstAttribute="trailing" secondItem="c29-AK-gvx" secondAttribute="trailing" constant="20" id="WDi-Kp-LLp"/>
@@ -468,6 +474,7 @@
                             <constraint firstItem="bDQ-tq-mx6" firstAttribute="top" secondItem="oBo-zz-zY4" secondAttribute="bottom" constant="20" id="nss-CR-mNH"/>
                             <constraint firstItem="bnz-eN-7Lx" firstAttribute="bottom" secondItem="c29-AK-gvx" secondAttribute="bottom" constant="25" id="of2-vo-gcP"/>
                             <constraint firstItem="oBo-zz-zY4" firstAttribute="trailing" secondItem="bnz-eN-7Lx" secondAttribute="trailing" id="t2h-ue-cXm"/>
+                            <constraint firstItem="bnz-eN-7Lx" firstAttribute="bottom" secondItem="mIC-zq-467" secondAttribute="bottom" constant="45" id="zqp-CH-8Tm"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bnz-eN-7Lx"/>
                     </view>
@@ -476,7 +483,9 @@
                         <barButtonItem key="backBarButtonItem" title="back" id="KkX-2j-w5l"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="mIC-zq-467" id="S7K-w6-hwU"/>
                         <outlet property="listIngredient" destination="3hU-eg-27Y" id="HW5-9j-PdA"/>
+                        <outlet property="searchRecipeBtn" destination="c29-AK-gvx" id="zRN-HI-M0f"/>
                         <outlet property="textfieldIngredient" destination="KSv-HK-EvN" id="88X-Mg-NEV"/>
                     </connections>
                 </viewController>
