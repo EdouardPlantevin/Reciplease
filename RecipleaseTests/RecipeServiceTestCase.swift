@@ -44,7 +44,7 @@ class RecipeServiceTestCase: XCTestCase {
         recipeDataModel.time = 1.0
         recipeDataModel.url = ""
         
-        let ingredient = Ingredient(context: AppDelegate.viewContext)
+        let ingredient = IngredientDataModel(context: AppDelegate.viewContext)
         ingredient.name = ""
         ingredient.quantity = 1.0
         ingredient.recipe = recipeDataModel
@@ -99,7 +99,7 @@ class RecipeServiceTestCase: XCTestCase {
         recipeDataModel.time = 1.0
         recipeDataModel.url = ""
         
-        let ingredient = Ingredient(context: AppDelegate.viewContext)
+        let ingredient = IngredientDataModel(context: AppDelegate.viewContext)
         ingredient.quantity = 1.0
         ingredient.recipe = recipeDataModel
         
@@ -116,20 +116,20 @@ class RecipeServiceTestCase: XCTestCase {
     
     func testRecipeService_WhenCallFuncGetRecipe_ThenShouldReturnRecipeAndSuccessTrue() {
         let e = expectation(description: "Alamofire")
-        let ingredient = Item(context: AppDelegate.viewContext)
+        let ingredient = ItemDataModel(context: AppDelegate.viewContext)
         ingredient.name = "chicken"
         try? AppDelegate.viewContext.save()
         RecipeService.shared.getRecipe { (success, recipes) in
             XCTAssertNotNil(recipes)
             XCTAssertTrue(success)
             e.fulfill()
-            Item.deleteAll()
+            ItemDataModel.deleteAll()
         }
         waitForExpectations(timeout: 15.0, handler: nil)
     }
     
     func testRecipeService_WhenCallFuncGetRecipeWithoutItem_ThenShouldReturnNoRecipeAndSuccessFalse() {
-        Item.deleteAll()
+        ItemDataModel.deleteAll()
         let e = expectation(description: "Alamofire")
         RecipeService.shared.getRecipe { (success, recipes) in
             XCTAssertNil(recipes)
@@ -142,17 +142,32 @@ class RecipeServiceTestCase: XCTestCase {
     
     func testRecipeService_WhenCallFuncGetRecipeWithWrongItem_ThenShouldReturnNotRecipeAndSuccessfalse() {
         let e = expectation(description: "Alamofire")
-        let ingredient = Item(context: AppDelegate.viewContext)
+        let ingredient = ItemDataModel(context: AppDelegate.viewContext)
         ingredient.name = "test"
         try? AppDelegate.viewContext.save()
         RecipeService.shared.getRecipe { (success, recipes) in
             XCTAssertNil(recipes)
             XCTAssertFalse(success)
             e.fulfill()
-            Item.deleteAll()
+            ItemDataModel.deleteAll()
         }
         waitForExpectations(timeout: 15.0, handler: nil)
     }
+    
+    func testRecipeService_WhenCallFuncGetRecipeWithWrongItemEspace_ThenShouldReturnNotRecipeAndSuccessfalse() {
+         let e = expectation(description: "Alamofire")
+         let ingredient = ItemDataModel(context: AppDelegate.viewContext)
+         ingredient.name = "test "
+         try? AppDelegate.viewContext.save()
+         RecipeService.shared.getRecipe { (success, recipes) in
+             XCTAssertNil(recipes)
+             XCTAssertFalse(success)
+             e.fulfill()
+             ItemDataModel.deleteAll()
+         }
+         waitForExpectations(timeout: 15.0, handler: nil)
+     }
+
 
     
 

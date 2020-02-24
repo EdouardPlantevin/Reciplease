@@ -7,18 +7,19 @@
 //
 
 import XCTest
+import CoreData
 @testable import Reciplease
 
 class ItemTestCase: XCTestCase {
 
     func testItem_WhenAddItem_ThenShouldReturnItems() {
         //Given
-        let ingredient = Item(context: AppDelegate.viewContext)
-        ingredient.name = "item1"
+        let item = ItemDataModel(context: AppDelegate.viewContext)
+        item.name = "item1"
         try? AppDelegate.viewContext.save()
         
         //Create
-        let items = Item.all
+        let items = ItemDataModel.all
         
         if let name = items.first?.name {
             XCTAssertEqual(items.first?.name, name)
@@ -27,16 +28,19 @@ class ItemTestCase: XCTestCase {
     
     func testItems_WhenRemoveAllItems_ThenShoulReturnEmptyArray() {
         //Given
-        let ingredient = Item(context: AppDelegate.viewContext)
-        ingredient.name = "12345"
+        let item = ItemDataModel(context: AppDelegate.viewContext)
+        item.name = "12345"
         try? AppDelegate.viewContext.save()
         
         //Create
-        Item.deleteAll()
-        let items = Item.all
+        ItemDataModel.deleteAll()
+        let items = ItemDataModel.all
 
         XCTAssertEqual(items, [])
   
     }
+
+    
+
     
 }

@@ -29,7 +29,7 @@ class RecipeService {
         guard let image = recipe.image else { return nil }
         guard let url = recipe.url else { return nil }
         let time = Int(recipe.time)
-        guard let ingredientsNSSet = (recipe.ingredients?.allObjects as? [Ingredient]) else { return nil}
+        guard let ingredientsNSSet = (recipe.ingredients?.allObjects as? [IngredientDataModel]) else { return nil}
         
         var ingredients: [String:Double] = [:]
         for ingredient in ingredientsNSSet {
@@ -46,7 +46,7 @@ class RecipeService {
     private let baseURL = "https://api.edamam.com/search?"
     
     private func getFullURL() -> String {
-        let ingredientsData = Item.all
+        let ingredientsData = ItemDataModel.all
         var ingredientsArray: [String] = []
         for ingredient in ingredientsData {
             if let ingredient = ingredient.name {
@@ -67,10 +67,7 @@ class RecipeService {
         Alamofire.request(url).validate().responseJSON { response in
             switch response.result {
                 case .success:
-                    guard let jsonData = response.data else {
-                        callBack(false, nil)
-                        return
-                    }
+                    guard let jsonData = response.data else { callBack(false, nil); return }
                     let jsonDecoder = JSONDecoder()
                     do {
                         let recipes = try jsonDecoder.decode(RecipeFromJson.self, from: jsonData)

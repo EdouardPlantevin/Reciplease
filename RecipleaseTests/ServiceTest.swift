@@ -26,7 +26,7 @@ func deleteData() {
         print("Error: \(error)")
     }
     
-    fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Ingredient")
+    fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "IngredientDataModel")
     fetchRequest.returnsObjectsAsFaults = false
 
     do

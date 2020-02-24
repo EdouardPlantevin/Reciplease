@@ -9,6 +9,6 @@
 import Foundation
 import CoreData
 
-class Ingredient: NSManagedObject {
+class IngredientDataModel: NSManagedObject {
     
 }

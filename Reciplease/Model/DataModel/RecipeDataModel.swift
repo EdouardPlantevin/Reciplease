@@ -12,9 +12,7 @@ import CoreData
 class RecipeDataModel: NSManagedObject {
     static var all: [RecipeDataModel] {
         let request: NSFetchRequest<RecipeDataModel> = RecipeDataModel.fetchRequest()
-        guard let recipe = try? AppDelegate.viewContext.fetch(request) else {
-            return []
-        }
+        guard let recipe = try? AppDelegate.viewContext.fetch(request) else { return [] }
         return recipe
     }
     
@@ -24,17 +22,12 @@ class RecipeDataModel: NSManagedObject {
             fetchRequest.predicate = NSPredicate(format: "name = %@", name)
         }
 
-        do {
-            let profiles = try AppDelegate.viewContext.fetch(fetchRequest)
-
+        let profiles = try? AppDelegate.viewContext.fetch(fetchRequest)
+        if let profiles = profiles {
             if let recipe = profiles.first as? RecipeDataModel {
                 AppDelegate.viewContext.delete(recipe)
                 try? AppDelegate.viewContext.save()
-            } else {
-                // no local cache yet, use placeholder for now
             }
-        } catch {
-            // handle error
         }
     }
     
@@ -54,7 +47,7 @@ class RecipeDataModel: NSManagedObject {
         
         let ingredients = recipe.ingredient
         for ingredient in ingredients {
-            let ingredientToSave = Ingredient(context: AppDelegate.viewContext)
+            let ingredientToSave = IngredientDataModel(context: AppDelegate.viewContext)
             ingredientToSave.quantity = ingredient.value
             ingredientToSave.name = ingredient.key
             ingredientToSave.recipe = recipeToAdd

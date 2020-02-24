@@ -32,7 +32,7 @@ class SearchViewController: UIViewController {
         textfieldIngredient.resignFirstResponder()
     }
     @IBAction func clearBtn(_ sender: UIButton) {
-        Item.deleteAll()
+        ItemDataModel.deleteAll()
         displayIngredientsList()
         ingredients.removeAll()
     }
@@ -64,7 +64,7 @@ class SearchViewController: UIViewController {
     //MARK:  Private Function
     fileprivate func displayIngredientsList() {
         var ingredientText = ""
-        for ingredient in Item.all {
+        for ingredient in ItemDataModel.all {
             if let name = ingredient.name {
                 ingredientText += "  - " + name + "\n"
                 ingredients.append(name)
@@ -92,7 +92,7 @@ class SearchViewController: UIViewController {
     }
     
     private func saveIngredient(named name: String) {
-        let ingredient = Item(context: AppDelegate.viewContext)
+        let ingredient = ItemDataModel(context: AppDelegate.viewContext)
         ingredient.name = name
         try? AppDelegate.viewContext.save()
     }
