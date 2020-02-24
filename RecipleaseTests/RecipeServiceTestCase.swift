@@ -113,23 +113,46 @@ class RecipeServiceTestCase: XCTestCase {
     
     //Alamofire
     
-    var vc: SearchViewController = SearchViewController()
     
-    func testLoginApiResponse() {
+    func testRecipeService_WhenCallFuncGetRecipe_ThenShouldReturnRecipeAndSuccessTrue() {
         let e = expectation(description: "Alamofire")
         let ingredient = Item(context: AppDelegate.viewContext)
         ingredient.name = "chicken"
         try? AppDelegate.viewContext.save()
         RecipeService.shared.getRecipe { (success, recipes) in
-            if success {
-                print("Bonjour")
-            }
+            XCTAssertNotNil(recipes)
+            XCTAssertTrue(success)
             e.fulfill()
             Item.deleteAll()
         }
-        waitForExpectations(timeout: 10.0, handler: nil)
+        waitForExpectations(timeout: 15.0, handler: nil)
     }
     
+    func testRecipeService_WhenCallFuncGetRecipeWithoutItem_ThenShouldReturnNoRecipeAndSuccessFalse() {
+        Item.deleteAll()
+        let e = expectation(description: "Alamofire")
+        RecipeService.shared.getRecipe { (success, recipes) in
+            XCTAssertNil(recipes)
+            XCTAssertFalse(success)
+            e.fulfill()
+        
+        }
+        waitForExpectations(timeout: 15.0, handler: nil)
+    }
+    
+    func testRecipeService_WhenCallFuncGetRecipeWithWrongItem_ThenShouldReturnNotRecipeAndSuccessfalse() {
+        let e = expectation(description: "Alamofire")
+        let ingredient = Item(context: AppDelegate.viewContext)
+        ingredient.name = "test"
+        try? AppDelegate.viewContext.save()
+        RecipeService.shared.getRecipe { (success, recipes) in
+            XCTAssertNil(recipes)
+            XCTAssertFalse(success)
+            e.fulfill()
+            Item.deleteAll()
+        }
+        waitForExpectations(timeout: 15.0, handler: nil)
+    }
 
     
 
