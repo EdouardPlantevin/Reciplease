@@ -9,7 +9,6 @@
 import Foundation
 import Alamofire
 
-
 class RecipeService {
     
     static let shared = RecipeService()
@@ -59,6 +58,7 @@ class RecipeService {
         let finalURL = baseURL + "q=" + ingredientURL + "&app_key=" + keyURL
         return finalURL
     }
+    
     
     func getRecipe(callBack: @escaping (Bool,[RecipeObject]?) -> Void) {
         let url = getFullURL()

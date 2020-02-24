@@ -110,6 +110,26 @@ class RecipeServiceTestCase: XCTestCase {
      }
     
     
+    
+    //Alamofire
+    
+    var vc: SearchViewController = SearchViewController()
+    
+    func testLoginApiResponse() {
+        let e = expectation(description: "Alamofire")
+        let ingredient = Item(context: AppDelegate.viewContext)
+        ingredient.name = "chicken"
+        try? AppDelegate.viewContext.save()
+        RecipeService.shared.getRecipe { (success, recipes) in
+            if success {
+                print("Bonjour")
+            }
+            e.fulfill()
+            Item.deleteAll()
+        }
+        waitForExpectations(timeout: 10.0, handler: nil)
+    }
+    
 
     
 
