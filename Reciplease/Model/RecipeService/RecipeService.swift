@@ -41,11 +41,8 @@ class RecipeService {
         return recipeObject
     }
     
-    
-    
-    private let baseURL = "https://api.edamam.com/search?"
-    
     private func getFullURL() -> String {
+        let baseURL = "https://api.edamam.com/search?"
         let ingredientsData = ItemDataModel.all
         var ingredientsArray: [String] = []
         for ingredient in ingredientsData {
@@ -58,9 +55,6 @@ class RecipeService {
         let finalURL = baseURL + "q=" + ingredientURL + "&app_key=" + keyURL
         return finalURL
     }
-    
-    
-    
     
     func getRecipe(callBack: @escaping (Bool,[RecipeObject]?) -> Void) {
         let url = getFullURL()

@@ -141,13 +141,13 @@
 			path = Global;
 			sourceTree = "<group>";
 		};
-		7A2A2FE52403ECDA002D46AE /* Recipe */ = {
+		7A2A2FE52403ECDA002D46AE /* RecipeService */ = {
 			isa = PBXGroup;
 			children = (
 				7A2A2F8F23F1AE4B002D46AE /* RecipeFromJson.swift */,
 				7A2A2F8D23F1AE42002D46AE /* RecipeService.swift */,
 			);
-			path = Recipe;
+			path = RecipeService;
 			sourceTree = "<group>";
 		};
 		7AE55E2C23D9D19B00B54116 = {
@@ -185,7 +185,7 @@
 		7AE55E4F23D9D1A800B54116 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				7A2A2FE52403ECDA002D46AE /* Recipe */,
+				7A2A2FE52403ECDA002D46AE /* RecipeService */,
 				7A2A2FE42403ECC3002D46AE /* Global */,
 				7A2A2FE32403EC86002D46AE /* DataModel */,
 			);

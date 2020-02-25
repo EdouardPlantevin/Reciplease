@@ -75,15 +75,14 @@ class SearchViewController: UIViewController {
     
     private func addIngredient() {
         if textfieldIngredient.text != nil && textfieldIngredient.text != "" {
-            if ingredients.contains(textfieldIngredient.text!) {
-                presentAlert(view: self, message: "You already put it")
-            } else {
-                guard let ingredientName = textfieldIngredient.text else {
-                    return
+            if let ingredient = textfieldIngredient.text?.trimmingCharacters(in: .whitespaces) {
+                if ingredients.contains(ingredient) {
+                    presentAlert(view: self, message: "You already put it")
+                } else {
+                    listIngredient.text += "  - \(ingredient)\n"
+                    saveIngredient(named: ingredient)
+                    ingredients.append(ingredient)
                 }
-                listIngredient.text += "  - \(ingredientName)\n"
-                saveIngredient(named: ingredientName)
-                ingredients.append(ingredientName)
             }
         } else {
             presentAlert(view: self, message: "You try to add nothing ? go to the supermarket bro\nWe can't do anything for you here")

@@ -10,8 +10,8 @@ import Foundation
 import CoreData
 
 class ItemDataModel: NSManagedObject {
-    static var request: NSFetchRequest<ItemDataModel> = ItemDataModel.fetchRequest()
     static var all: [ItemDataModel] {
+        let request: NSFetchRequest<ItemDataModel> = ItemDataModel.fetchRequest()
         guard let items = try? AppDelegate.viewContext.fetch(request) else { return [] }
         return items
     }
