@@ -11,20 +11,6 @@ import CoreData
 @testable import Reciplease
 
 class ItemTestCase: XCTestCase {
-
-    func testItem_WhenAddItem_ThenShouldReturnItems() {
-        //Given
-        let item = ItemDataModel(context: AppDelegate.viewContext)
-        item.name = "item1"
-        try? AppDelegate.viewContext.save()
-        
-        //Create
-        let items = ItemDataModel.all
-        
-        if let name = items.first?.name {
-            XCTAssertEqual(items.first?.name, name)
-        }
-    }
     
     func testItems_WhenRemoveAllItems_ThenShoulReturnEmptyArray() {
         //Given
@@ -38,6 +24,24 @@ class ItemTestCase: XCTestCase {
 
         XCTAssertEqual(items, [])
   
+    }
+    
+    func testItems_WhenAddNewItem_ThenSdouldAddNewItemToCoreData() {
+  
+        //Given
+        let itemName = "item1"
+        //Create
+        ItemDataModel.saveIngredient(named: itemName)
+   
+        //Then
+        let item = ItemDataModel.all
+        var name: [String] = []
+        for nameItemDataModel in item {
+            if let nameAppend = nameItemDataModel.name {
+                name.append(nameAppend)
+            }
+        }
+        XCTAssertTrue(name.contains(itemName))
     }
 
     

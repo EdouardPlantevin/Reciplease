@@ -16,6 +16,12 @@ class ItemDataModel: NSManagedObject {
         return items
     }
     
+    static func saveIngredient(named name: String) {
+        let ingredient = ItemDataModel(context: AppDelegate.viewContext)
+        ingredient.name = name
+        try? AppDelegate.viewContext.save()
+    }
+    
     static func deleteAll() {
         let context = AppDelegate.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ItemDataModel")

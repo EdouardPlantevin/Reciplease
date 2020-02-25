@@ -80,7 +80,7 @@ class SearchViewController: UIViewController {
                     presentAlert(view: self, message: "You already put it")
                 } else {
                     listIngredient.text += "  - \(ingredient)\n"
-                    saveIngredient(named: ingredient)
+                    ItemDataModel.saveIngredient(named: ingredient)
                     ingredients.append(ingredient)
                 }
             }
@@ -88,12 +88,6 @@ class SearchViewController: UIViewController {
             presentAlert(view: self, message: "You try to add nothing ? go to the supermarket bro\nWe can't do anything for you here")
         }
         textfieldIngredient.text = ""
-    }
-    
-    private func saveIngredient(named name: String) {
-        let ingredient = ItemDataModel(context: AppDelegate.viewContext)
-        ingredient.name = name
-        try? AppDelegate.viewContext.save()
     }
 }
 
