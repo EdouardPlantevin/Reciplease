@@ -83,30 +83,30 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uAT-vS-S6T">
-                                                    <rect key="frame" x="300" y="11" width="60" height="50"/>
+                                                    <rect key="frame" x="290" y="11" width="70" height="50"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="cLI-oS-xrv">
-                                                            <rect key="frame" x="1" y="1" width="33.5" height="48"/>
+                                                            <rect key="frame" x="1" y="1" width="50" height="48"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2,5 k" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JNI-Fe-yLu">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="33.5" height="24"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="24"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 m" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SMj-CD-xCF">
-                                                                    <rect key="frame" x="0.0" y="24" width="33.5" height="24"/>
+                                                                    <rect key="frame" x="0.0" y="24" width="50" height="24"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="33.5" id="SnO-bC-WNx"/>
+                                                                <constraint firstAttribute="width" constant="50" id="SnO-bC-WNx"/>
                                                             </constraints>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="YKD-l7-a2u">
-                                                            <rect key="frame" x="39" y="1" width="20" height="48"/>
+                                                            <rect key="frame" x="49" y="1" width="20" height="48"/>
                                                             <subviews>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hand.thumbsup.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="dG1-6M-Oz9">
                                                                     <rect key="frame" x="0.0" y="-0.5" width="20" height="24"/>
@@ -128,7 +128,7 @@
                                                         <constraint firstItem="cLI-oS-xrv" firstAttribute="top" secondItem="uAT-vS-S6T" secondAttribute="top" constant="1" id="U16-EM-TUE"/>
                                                         <constraint firstAttribute="bottom" secondItem="YKD-l7-a2u" secondAttribute="bottom" constant="1" id="XPM-bg-VRU"/>
                                                         <constraint firstItem="cLI-oS-xrv" firstAttribute="leading" secondItem="uAT-vS-S6T" secondAttribute="leading" constant="1" id="Ydv-OW-kCu"/>
-                                                        <constraint firstAttribute="width" constant="60" id="dVX-rF-NhC"/>
+                                                        <constraint firstAttribute="width" constant="70" id="dVX-rF-NhC"/>
                                                         <constraint firstAttribute="trailing" secondItem="YKD-l7-a2u" secondAttribute="trailing" constant="1" id="fvi-v9-DNv"/>
                                                         <constraint firstAttribute="height" constant="50" id="g4w-xW-6Y5"/>
                                                         <constraint firstItem="YKD-l7-a2u" firstAttribute="top" secondItem="uAT-vS-S6T" secondAttribute="top" constant="1" id="lln-mI-pW7"/>

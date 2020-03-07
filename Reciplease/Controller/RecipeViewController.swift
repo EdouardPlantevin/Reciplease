@@ -95,7 +95,7 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
             let data = try? Data(contentsOf: url!)
             let image = UIImage(data: data!)!
             
-            cell.configure(withImage: image, title: recipe!.name, detail: detailString, time: "\(recipe!.time / 60) h", likes: "2.5")
+            cell.configure(withImage: image, title: recipe!.name, detail: detailString, time: "\(recipe!.time / 60) min", likes: "2.5k")
             return cell
         } else {
             var image: UIImage = UIImage(named: "12218_large")!
@@ -114,7 +114,7 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    /// Header 
+    /// Header
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "All recipes"
     }
