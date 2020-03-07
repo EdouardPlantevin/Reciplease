@@ -35,15 +35,16 @@ class DetailRecipeViewController: UIViewController {
         }
         if currentPage == .favorite {
             changeBtnImageFavorite(fav: true)
-            isFavorite = true
         }
     }
     
+    
+    /// MARK: Private Fcuntion
     private func setPage(recipe: RecipeObject) {
         nameLabel.text = recipe.name
         var ingredientsLabel = ""
         for ingredient in recipe.ingredient {
-            ingredientsLabel += "- \(Int(ingredient.value))  \(ingredient.key)\n"
+            ingredientsLabel += "- \(ingredient.key)\n"
         }
         ingredientsTextView.text = ingredientsLabel
         let imageURL = recipe.image
@@ -56,8 +57,10 @@ class DetailRecipeViewController: UIViewController {
     private func changeBtnImageFavorite(fav: Bool) {
         if fav {
             favorityBtnOutlet.setImage(UIImage(systemName: "star.fill"), for: .normal)
+            isFavorite = true
         } else {
             favorityBtnOutlet.setImage(UIImage(systemName: "star"), for: .normal)
+            isFavorite = false
         }
     }
     
@@ -65,7 +68,6 @@ class DetailRecipeViewController: UIViewController {
         if let recipe = recipe {
             self.recipe = RecipeDataModel.addRecipe(recipe: recipe)
             changeBtnImageFavorite(fav: true)
-            isFavorite = true
         }
     }
     
@@ -75,9 +77,9 @@ class DetailRecipeViewController: UIViewController {
             RecipeService.shared.delete(index: index)
         }
         changeBtnImageFavorite(fav: false)
-        isFavorite = false
     }
-
+    
+    ///MARK: Button
     @IBAction func addToFavority(_ sender: UIButton) {
         if isFavorite {
             ///Remove

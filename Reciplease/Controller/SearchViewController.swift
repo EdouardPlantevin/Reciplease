@@ -16,6 +16,7 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var searchRecipeBtn: UIButton!
     
+    // Use for ingredient display
     var ingredients: [String] = []
 
     override func viewDidLoad() {
@@ -54,14 +55,12 @@ class SearchViewController: UIViewController {
         }
     }
     
-    //MARK: Function
+     //MARK:  Private Function
     private func showActivityIndicator() {
         searchRecipeBtn.isHidden = !searchRecipeBtn.isHidden
         activityIndicator.isHidden = !activityIndicator.isHidden
     }
     
-
-    //MARK:  Private Function
     fileprivate func displayIngredientsList() {
         var ingredientText = ""
         for ingredient in ItemDataModel.all {

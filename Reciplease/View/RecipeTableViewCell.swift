@@ -20,6 +20,7 @@ class RecipeTableViewCell: UITableViewCell {
         super.awakeFromNib()
     }
     
+    
     func configure(withImage image: UIImage, title: String, detail: String, time: String, likes: String) {
         titleLabel.text = title
         detailLabel.text = detail
@@ -28,6 +29,4 @@ class RecipeTableViewCell: UITableViewCell {
         imageRecipe.image = image
     }
     
-    
-
 }

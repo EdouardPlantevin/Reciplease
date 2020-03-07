@@ -44,6 +44,7 @@ class RecipeViewController: UIViewController {
 // MARK: - TableView Recipe
 extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     
+    // Height cell
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
@@ -54,7 +55,6 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "detailRecipeViewController") as! DetailRecipeViewController
-        
         let selectedRecipeObject: RecipeObject!
         
         if currentPage == .search {
@@ -112,6 +112,11 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
             cell.configure(withImage: image, title: name, detail: detail, time: "0", likes: "0")
             return cell
         }
+    }
+    
+    /// Header 
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "All recipes"
     }
     
 }
