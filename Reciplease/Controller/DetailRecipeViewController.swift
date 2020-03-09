@@ -19,7 +19,6 @@ class DetailRecipeViewController: UIViewController {
     var currentPage: page = .favorite
     var recipe: RecipeDataModel?
     var recipeObject: RecipeObject?
-    var index: Int?
     var isFavorite: Bool = false
     
     @IBOutlet weak var nameLabel: UILabel!
@@ -73,9 +72,6 @@ class DetailRecipeViewController: UIViewController {
     
     private func deleteRecipe(recipe: RecipeDataModel) {
         RecipeDataModel.removeRecipe(recipe: recipe)
-        if let index = self.index {
-            RecipeService.shared.delete(index: index)
-        }
         changeBtnImageFavorite(fav: false)
     }
     

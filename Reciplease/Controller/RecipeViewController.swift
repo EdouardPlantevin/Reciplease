@@ -33,11 +33,6 @@ class RecipeViewController: UIViewController {
         tableView.reloadData()
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.reloadData()
-    }
-
 }
 
 
@@ -55,15 +50,16 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "detailRecipeViewController") as! DetailRecipeViewController
-        let selectedRecipeObject: RecipeObject!
+        var selectedRecipeObject: RecipeObject!
         
         if currentPage == .search {
-            selectedRecipeObject = RecipeService.shared.recipes![indexPath.row]
+            if let recipe = RecipeService.shared.recipes?[indexPath.row] {
+                selectedRecipeObject = recipe
+            }
             vc.currentPage = .search
         } else {
             let selectedRecipe = RecipeDataModel.all[indexPath.row]
             vc.recipe = selectedRecipe
-            vc.index = indexPath.row
             selectedRecipeObject = RecipeService.convertRecipeToRecipeObject(recipe: selectedRecipe)
         }
         vc.recipeObject = selectedRecipeObject
@@ -83,19 +79,19 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "recipeCell", for: indexPath) as? RecipeTableViewCell else { return UITableViewCell() }
         
         if currentPage == .search {
-            let recipe = RecipeService.shared.recipes?[indexPath.row]
-            
-            var detailString = ""
-            for ingredient in recipe!.ingredient {
-                detailString += ingredient.key + " "
+            if let recipe = RecipeService.shared.recipes?[indexPath.row] {
+                var detailString = ""
+                for ingredient in recipe.ingredient {
+                    detailString += ingredient.key + " "
+                }
+                
+                let imageURL = recipe.image
+                let url = URL(string: imageURL)
+                let data = try? Data(contentsOf: url!)
+                let image = UIImage(data: data!)!
+                
+                cell.configure(withImage: image, title: recipe.name, detail: detailString, time: "\(recipe.time / 60) min", likes: "2.5k")
             }
-            
-            let imageURL = recipe?.image ?? "12218_large"
-            let url = URL(string: imageURL)
-            let data = try? Data(contentsOf: url!)
-            let image = UIImage(data: data!)!
-            
-            cell.configure(withImage: image, title: recipe!.name, detail: detailString, time: "\(recipe!.time / 60) min", likes: "2.5k")
             return cell
         } else {
             var image: UIImage = UIImage(named: "12218_large")!
@@ -103,13 +99,15 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
             if let imageURL = recipe.image {
                 if let url = URL(string: imageURL) {
                     if let data = try? Data(contentsOf: url) {
-                        image = UIImage(data: data)!
+                        if let imageFinal = UIImage(data: data) {
+                            image = imageFinal
+                        }
                     }
                 }
             }
             let name = recipe.name ?? ""
             let detail = recipe.name ?? ""
-            cell.configure(withImage: image, title: name, detail: detail, time: "0", likes: "0")
+            cell.configure(withImage: image, title: name, detail: detail, time: "\(recipe.time / 60) min", likes: "2.5k")
             return cell
         }
     }

@@ -41,9 +41,8 @@ class SearchViewController: UIViewController {
     @IBAction func searchRecipeBtn(_ sender: UIButton) {
         showActivityIndicator()
         activityIndicator.startAnimating()
-        RecipeService.shared.getRecipe { (success, recipe) in
+        RecipeService.shared.getRecipe { (success) in
             if success {
-                RecipeService.shared.add(recipes: recipe!)
                 self.showActivityIndicator()
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "recipeViewController") as! RecipeViewController
                 vc.currentPage = .search

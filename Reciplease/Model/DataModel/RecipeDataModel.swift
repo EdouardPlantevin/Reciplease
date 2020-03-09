@@ -40,7 +40,7 @@ class RecipeDataModel: NSManagedObject {
         let url = recipe.url
         recipeToAdd.name = name
         recipeToAdd.likes = likes
-        recipeToAdd.time = Double(time)
+        recipeToAdd.time = Int16(time)
         recipeToAdd.image = image
         recipeToAdd.url = url
         try? AppDelegate.viewContext.save()

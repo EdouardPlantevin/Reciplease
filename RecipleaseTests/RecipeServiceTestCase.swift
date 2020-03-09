@@ -119,8 +119,8 @@ class RecipeServiceTestCase: XCTestCase {
         let ingredient = ItemDataModel(context: AppDelegate.viewContext)
         ingredient.name = "chicken"
         try? AppDelegate.viewContext.save()
-        RecipeService.shared.getRecipe { (success, recipes) in
-            XCTAssertNotNil(recipes)
+        RecipeService.shared.getRecipe { (success) in
+            XCTAssertNotNil(RecipeService.shared.recipes)
             XCTAssertTrue(success)
             e.fulfill()
             ItemDataModel.deleteAll()
@@ -131,8 +131,7 @@ class RecipeServiceTestCase: XCTestCase {
     func testRecipeService_WhenCallFuncGetRecipeWithoutItem_ThenShouldReturnNoRecipeAndSuccessFalse() {
         ItemDataModel.deleteAll()
         let e = expectation(description: "Alamofire")
-        RecipeService.shared.getRecipe { (success, recipes) in
-            XCTAssertNil(recipes)
+        RecipeService.shared.getRecipe { (success) in
             XCTAssertFalse(success)
             e.fulfill()
         
@@ -145,8 +144,7 @@ class RecipeServiceTestCase: XCTestCase {
         let ingredient = ItemDataModel(context: AppDelegate.viewContext)
         ingredient.name = "test"
         try? AppDelegate.viewContext.save()
-        RecipeService.shared.getRecipe { (success, recipes) in
-            XCTAssertNil(recipes)
+        RecipeService.shared.getRecipe { (success) in
             XCTAssertFalse(success)
             e.fulfill()
             ItemDataModel.deleteAll()
@@ -159,8 +157,7 @@ class RecipeServiceTestCase: XCTestCase {
          let ingredient = ItemDataModel(context: AppDelegate.viewContext)
          ingredient.name = "test "
          try? AppDelegate.viewContext.save()
-         RecipeService.shared.getRecipe { (success, recipes) in
-             XCTAssertNil(recipes)
+         RecipeService.shared.getRecipe { (success) in
              XCTAssertFalse(success)
              e.fulfill()
              ItemDataModel.deleteAll()

@@ -56,12 +56,12 @@ class RecipeService {
         return finalURL
     }
     
-    func getRecipe(callBack: @escaping (Bool,[RecipeObject]?) -> Void) {
+    func getRecipe(callBack: @escaping (Bool) -> Void) {
         let url = getFullURL()
         Alamofire.request(url).validate().responseJSON { response in
             switch response.result {
                 case .success:
-                    guard let jsonData = response.data else { callBack(false, nil); return }
+                    guard let jsonData = response.data else { callBack(false); return }
                     let jsonDecoder = JSONDecoder()
                     do {
                         let recipes = try jsonDecoder.decode(RecipeFromJson.self, from: jsonData)
@@ -79,18 +79,19 @@ class RecipeService {
                                 let recipe = RecipeObject(name: name, image: image, time: time, ingredient: ingredients, url: url)
                                 recipesFinal.append(recipe)
                             }
-                            callBack(true, recipesFinal)
+                            RecipeService.shared.add(recipes: recipesFinal)
+                            callBack(true)
                         } else {
-                            callBack(false, nil)
+                            callBack(false)
                         }
                     } catch let error{
                         print(error.localizedDescription)
-                        callBack(false, nil)
+                        callBack(false)
                     }
                       
                 case .failure(let error):
                     print(error.localizedDescription)
-                    callBack(false, nil)
+                    callBack(false)
             }
         }
     }
