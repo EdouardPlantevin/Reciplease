@@ -17,96 +17,22 @@ struct RecipeObject {
     let url: String
 }
 
-// MARK: - Recipe
-struct RecipeFromJson: Codable {
-    let q: String
-    let from, to: Int
-    let more: Bool
-    let count: Int
+struct RecipesSearch: Decodable {
     let hits: [Hit]
 }
 
 // MARK: - Hit
-struct Hit: Codable {
-    let recipe: RecipeClass
-    let bookmarked, bought: Bool
+struct Hit: Decodable {
+    let recipe: Recipe
 }
 
-// MARK: - RecipeClass
-struct RecipeClass: Codable {
-    let uri: String
+// MARK: - Recipe
+struct Recipe: Decodable {
     let label: String
-    let image: String
-    let source: String
+    let image: String?
     let url: String
-    let shareAs: String
     let yield: Int
-    let dietLabels: [String]
-    let healthLabels: [HealthLabel]
-    let cautions: [Caution]
     let ingredientLines: [String]
-    let ingredients: [IngredientRecipe]
-    let calories, totalWeight: Double
-    let totalTime: Int
-    let totalNutrients, totalDaily: [String: Total]
-    let digest: [Digest]
+    let totalTime: Int?
 }
 
-enum Caution: String, Codable {
-    case fodmap = "FODMAP"
-    case gluten = "Gluten"
-    case sulfites = "Sulfites"
-    case wheat = "Wheat"
-}
-
-// MARK: - Digest
-struct Digest: Codable {
-    let label, tag: String
-    let schemaOrgTag: SchemaOrgTag?
-    let total: Double
-    let hasRDI: Bool
-    let daily: Double
-    let unit: Unit
-    let sub: [Digest]?
-}
-
-enum SchemaOrgTag: String, Codable {
-    case carbohydrateContent = "carbohydrateContent"
-    case cholesterolContent = "cholesterolContent"
-    case fatContent = "fatContent"
-    case fiberContent = "fiberContent"
-    case proteinContent = "proteinContent"
-    case saturatedFatContent = "saturatedFatContent"
-    case sodiumContent = "sodiumContent"
-    case sugarContent = "sugarContent"
-    case transFatContent = "transFatContent"
-}
-
-enum Unit: String, Codable {
-    case empty = "%"
-    case g = "g"
-    case iu = "IU"
-    case kcal = "kcal"
-    case mg = "mg"
-    case µg = "µg"
-}
-
-enum HealthLabel: String, Codable {
-    case alcoholFree = "Alcohol-Free"
-    case peanutFree = "Peanut-Free"
-    case sugarConscious = "Sugar-Conscious"
-    case treeNutFree = "Tree-Nut-Free"
-}
-
-// MARK: - Ingredient
-struct IngredientRecipe: Codable {
-    let text: String
-    let weight: Double
-}
-
-// MARK: - Total
-struct Total: Codable {
-    let label: String
-    let quantity: Double
-    let unit: Unit
-}

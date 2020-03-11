@@ -16,6 +16,7 @@ class RecipeViewController: UIViewController {
     }
     
     var currentPage: page = .favorite
+    var recipeService: RecipeService!
     
     // MARK: - Outlet
     @IBOutlet weak var tableView: UITableView!
@@ -32,7 +33,6 @@ class RecipeViewController: UIViewController {
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
-
 }
 
 
@@ -53,8 +53,10 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
         var selectedRecipeObject: RecipeObject!
         
         if currentPage == .search {
-            if let recipe = RecipeService.shared.recipes?[indexPath.row] {
-                selectedRecipeObject = recipe
+            if let recipeService = recipeService {
+                if let recipe = recipeService.recipes?[indexPath.row] {
+                    selectedRecipeObject = recipe
+                }
             }
             vc.currentPage = .search
         } else {
@@ -68,7 +70,7 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if currentPage == .search {
-            return RecipeService.shared.recipes!.count
+            return recipeService.recipes!.count
         } else {
             return RecipeDataModel.all.count
         }
@@ -79,7 +81,7 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "recipeCell", for: indexPath) as? RecipeTableViewCell else { return UITableViewCell() }
         
         if currentPage == .search {
-            if let recipe = RecipeService.shared.recipes?[indexPath.row] {
+            if let recipe = recipeService.recipes?[indexPath.row] {
                 var detailString = ""
                 for ingredient in recipe.ingredient {
                     detailString += ingredient.key + " "

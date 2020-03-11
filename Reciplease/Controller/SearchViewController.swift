@@ -16,6 +16,8 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var searchRecipeBtn: UIButton!
     
+    var recipeService = RecipeService()
+    
     // Use for ingredient display
     var ingredients: [String] = []
 
@@ -25,6 +27,7 @@ class SearchViewController: UIViewController {
         displayIngredientsList()
         activityIndicator.isHidden = true
     }
+
     
     
     //MARK: Button
@@ -41,10 +44,11 @@ class SearchViewController: UIViewController {
     @IBAction func searchRecipeBtn(_ sender: UIButton) {
         showActivityIndicator()
         activityIndicator.startAnimating()
-        RecipeService.shared.getRecipe { (success) in
+        recipeService.getRecipe { (success) in
             if success {
                 self.showActivityIndicator()
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "recipeViewController") as! RecipeViewController
+                vc.recipeService = self.recipeService
                 vc.currentPage = .search
                 self.navigationController?.pushViewController(vc, animated: true)
             } else {

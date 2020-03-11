@@ -14,22 +14,24 @@ class RecipeServiceTestCase: XCTestCase {
     
     func testRecipeService_WhenAddIRecipe_ThenShouldReturnRecipe() {
         //Given
+        let recipeService = RecipeService()
         let recipeObject = RecipeObject(name: "", image: "", time: 0, ingredient: [:], url: "")
-        RecipeService.shared.add(recipes: [recipeObject])
+        recipeService.add(recipes: [recipeObject])
 
-        let recipes = RecipeService.shared.recipes
+        let recipes = recipeService.recipes
         XCTAssertEqual(recipes?.count, 1)
         
     }
     
     func testRecipeService_WhenRemoveIRecipe_ThenShouldReturnEmptyArray() {
         //Given
+        let recipeService = RecipeService()
         let recipeObject = RecipeObject(name: "", image: "", time: 0, ingredient: [:], url: "")
-        RecipeService.shared.add(recipes: [recipeObject])
+        recipeService.add(recipes: [recipeObject])
 
-        RecipeService.shared.delete(index: 0)
+        recipeService.delete(index: 0)
         
-        let recipes = RecipeService.shared.recipes
+        let recipes = recipeService.recipes
         XCTAssertEqual(recipes?.count, 0)
         
     }
@@ -41,7 +43,7 @@ class RecipeServiceTestCase: XCTestCase {
         recipeDataModel.name = "name"
         recipeDataModel.image = ""
         recipeDataModel.likes = 1.0
-        recipeDataModel.time = 1.0
+        recipeDataModel.time = Int16(1.0)
         recipeDataModel.url = ""
         
         let ingredient = IngredientDataModel(context: AppDelegate.viewContext)
@@ -96,7 +98,7 @@ class RecipeServiceTestCase: XCTestCase {
         recipeDataModel.name = "name"
         recipeDataModel.image = ""
         recipeDataModel.likes = 1.0
-        recipeDataModel.time = 1.0
+        recipeDataModel.time = Int16(1.0)
         recipeDataModel.url = ""
         
         let ingredient = IngredientDataModel(context: AppDelegate.viewContext)
@@ -108,64 +110,5 @@ class RecipeServiceTestCase: XCTestCase {
         XCTAssertNil(recipeObject)
         deleteData()
      }
-    
-    
-    
-    //Alamofire
-    
-    
-    func testRecipeService_WhenCallFuncGetRecipe_ThenShouldReturnRecipeAndSuccessTrue() {
-        let e = expectation(description: "Alamofire")
-        let ingredient = ItemDataModel(context: AppDelegate.viewContext)
-        ingredient.name = "chicken"
-        try? AppDelegate.viewContext.save()
-        RecipeService.shared.getRecipe { (success) in
-            XCTAssertNotNil(RecipeService.shared.recipes)
-            XCTAssertTrue(success)
-            e.fulfill()
-            ItemDataModel.deleteAll()
-        }
-        waitForExpectations(timeout: 15.0, handler: nil)
-    }
-    
-    func testRecipeService_WhenCallFuncGetRecipeWithoutItem_ThenShouldReturnNoRecipeAndSuccessFalse() {
-        ItemDataModel.deleteAll()
-        let e = expectation(description: "Alamofire")
-        RecipeService.shared.getRecipe { (success) in
-            XCTAssertFalse(success)
-            e.fulfill()
-        
-        }
-        waitForExpectations(timeout: 15.0, handler: nil)
-    }
-    
-    func testRecipeService_WhenCallFuncGetRecipeWithWrongItem_ThenShouldReturnNotRecipeAndSuccessfalse() {
-        let e = expectation(description: "Alamofire")
-        let ingredient = ItemDataModel(context: AppDelegate.viewContext)
-        ingredient.name = "test"
-        try? AppDelegate.viewContext.save()
-        RecipeService.shared.getRecipe { (success) in
-            XCTAssertFalse(success)
-            e.fulfill()
-            ItemDataModel.deleteAll()
-        }
-        waitForExpectations(timeout: 15.0, handler: nil)
-    }
-    
-    func testRecipeService_WhenCallFuncGetRecipeWithWrongItemEspace_ThenShouldReturnNotRecipeAndSuccessfalse() {
-         let e = expectation(description: "Alamofire")
-         let ingredient = ItemDataModel(context: AppDelegate.viewContext)
-         ingredient.name = "test "
-         try? AppDelegate.viewContext.save()
-         RecipeService.shared.getRecipe { (success) in
-             XCTAssertFalse(success)
-             e.fulfill()
-             ItemDataModel.deleteAll()
-         }
-         waitForExpectations(timeout: 15.0, handler: nil)
-     }
-
-
-    
 
 }

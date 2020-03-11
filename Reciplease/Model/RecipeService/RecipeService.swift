@@ -10,9 +10,12 @@ import Foundation
 import Alamofire
 
 class RecipeService {
+        
+    private let recipeSession: RecipeProtocol
     
-    static let shared = RecipeService()
-    private init() {}
+    init(recipeSession: RecipeProtocol = RecipeSession()) {
+        self.recipeSession = recipeSession
+    }
     
     private(set) var recipes: [RecipeObject]?
     
@@ -29,7 +32,7 @@ class RecipeService {
         guard let image = recipe.image else { return nil }
         guard let url = recipe.url else { return nil }
         let time = Int(recipe.time)
-        guard let ingredientsNSSet = (recipe.ingredients?.allObjects as? [IngredientDataModel]) else { return nil}
+        guard let ingredientsNSSet = (recipe.ingredients?.allObjects as? [IngredientDataModel]) else { return nil }
         
         var ingredients: [String:Double] = [:]
         for ingredient in ingredientsNSSet {
@@ -41,8 +44,7 @@ class RecipeService {
         return recipeObject
     }
     
-    private func getFullURL() -> String {
-        let baseURL = "https://api.edamam.com/search?"
+    private func getFullURL() -> URL? {
         let ingredientsData = ItemDataModel.all
         var ingredientsArray: [String] = []
         for ingredient in ingredientsData {
@@ -51,49 +53,41 @@ class RecipeService {
             }
         }
         let ingredientURL = ingredientsArray.joined(separator: "%20")
-        let keyURL = Keys.keyRecipe
-        let finalURL = baseURL + "q=" + ingredientURL + "&app_key=" + keyURL
+        guard let finalURL = URL(string: recipeSession.urlStringApi + ingredientURL) else { return nil }
         return finalURL
     }
     
     func getRecipe(callBack: @escaping (Bool) -> Void) {
-        let url = getFullURL()
-        Alamofire.request(url).validate().responseJSON { response in
-            switch response.result {
-                case .success:
-                    guard let jsonData = response.data else { callBack(false); return }
-                    let jsonDecoder = JSONDecoder()
-                    do {
-                        let recipes = try jsonDecoder.decode(RecipeFromJson.self, from: jsonData)
-                        if recipes.count > 0 {
-                            var recipesFinal: [RecipeObject] = []
-                            for recipe in recipes.hits {
-                                let name = recipe.recipe.label
-                                let image = recipe.recipe.image
-                                let time = recipe.recipe.totalTime
-                                let url = recipe.recipe.url
-                                var ingredients: [String: Double] = [:]
-                                for ingredient in recipe.recipe.ingredients {
-                                    ingredients[ingredient.text] = ingredient.weight
-                                }
-                                let recipe = RecipeObject(name: name, image: image, time: time, ingredient: ingredients, url: url)
-                                recipesFinal.append(recipe)
-                            }
-                            RecipeService.shared.add(recipes: recipesFinal)
-                            callBack(true)
-                        } else {
-                            callBack(false)
-                        }
-                    } catch let error{
-                        print(error.localizedDescription)
-                        callBack(false)
-                    }
-                      
-                case .failure(let error):
-                    print(error.localizedDescription)
-                    callBack(false)
+        guard let url = getFullURL() else { return }
+        recipeSession.request(url: url) { response in
+            guard response.response?.statusCode == 200 else {
+                callBack(false)
+                return
             }
+            guard let data = response.data else {
+                callBack(false)
+                return
+            }
+            guard let recipes = try? JSONDecoder().decode(RecipesSearch.self, from: data) else {
+                print("3")
+                callBack(false)
+                return
+            }
+            var recipesFinal: [RecipeObject] = []
+            for recipe in recipes.hits {
+                let name = recipe.recipe.label
+                let image = recipe.recipe.image ?? ""
+                let time = recipe.recipe.totalTime ?? 0
+                let url = recipe.recipe.url
+                var ingredients: [String: Double] = [:]
+                for ingredient in recipe.recipe.ingredientLines {
+                    ingredients[ingredient] = 0
+                }
+                let recipe = RecipeObject(name: name, image: image, time: time, ingredient: ingredients, url: url)
+                recipesFinal.append(recipe)
+            }
+            self.add(recipes: recipesFinal)
+            callBack(true)
         }
     }
-    
 }
